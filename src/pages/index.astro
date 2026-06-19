@@ -1,0 +1,50 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import RailDecoration from '../components/RailDecoration.astro';
+import Hero from '../components/sections/Hero.astro';
+import HeroGrid from '../components/sections/HeroGrid.astro';
+import FeaturesGrid from '../components/sections/FeaturesGrid.astro';
+import ExamplesSection from '../components/sections/ExamplesSection.astro';
+import TestimonialsGrid from '../components/sections/TestimonialsGrid.astro';
+import FooterSection from '../components/sections/FooterSection.astro';
+---
+
+<BaseLayout
+  title="Sandbox SDK — Cloudflare"
+  description="Run sandboxed code environments securely and at scale on Cloudflare's edge network."
+>
+  <!-- Fixed side rail decorations -->
+  <RailDecoration side="left" />
+  <RailDecoration side="right" />
+
+  <div class="min-h-screen">
+    <div class="px-4 sm:px-8 lg:px-16">
+      <main class="pt-4 pb-6 max-w-[1400px] mx-auto lg:border-x border-dashed border-foreground/20">
+
+        <Hero />
+        <HeroGrid />
+
+        <!-- Section separator -->
+        <div class="h-4 sm:h-6 border border-t-0 relative bg-neutral-200"></div>
+
+        <FeaturesGrid />
+
+        <!-- Section separator -->
+        <div class="h-4 sm:h-6 border border-t-0 relative bg-neutral-200"></div>
+
+        <ExamplesSection />
+
+        <!-- Section separator -->
+        <div class="h-4 sm:h-6 border border-t-0 relative bg-neutral-200"></div>
+
+        <TestimonialsGrid />
+
+        <!-- Section separator -->
+        <div class="h-4 sm:h-6 border border-t-0 relative bg-neutral-200"></div>
+
+        <FooterSection />
+
+      </main>
+    </div>
+  </div>
+</BaseLayout>

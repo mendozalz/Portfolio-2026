@@ -1,0 +1,22 @@
+---
+interface Props {
+  side: 'left' | 'right';
+}
+const { side } = Astro.props;
+---
+
+<div
+  class:list={[
+    'fixed top-6 bottom-6 hidden lg:flex flex-col items-center justify-between pointer-events-none z-50',
+    side === 'left' ? 'left-6' : 'right-6',
+  ]}
+>
+  <!-- Top dot -->
+  <div class="size-1.5 rounded-full bg-foreground/30"></div>
+
+  <!-- Vertical dashed line -->
+  <div class="flex-1 w-px border-l border-dashed border-foreground/20 my-2"></div>
+
+  <!-- Bottom dot -->
+  <div class="size-1.5 rounded-full bg-foreground/30"></div>
+</div>

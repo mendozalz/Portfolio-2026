@@ -1,0 +1,139 @@
+@import "tailwindcss";
+
+/* ─── Theme tokens (TailwindCSS v4) ─────────────────────────────────────── */
+@theme {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-family-sans: var(--font-sans);
+  --font-family-mono: var(--font-mono);
+}
+
+/* ─── CSS Custom Properties ──────────────────────────────────────────────── */
+:root {
+  --background: oklch(97% 0 0);
+  --foreground: oklch(14.5% 0 0);
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
+  --color-orange-800: #ea580c;
+  --color-neutral-400: oklch(70.8% 0 0);
+  --color-neutral-200: oklch(92.2% 0 0);
+  --color-neutral-950: oklch(14.5% 0 0);
+
+  /* Shiki css-variables theme tokens */
+  --shiki-foreground: var(--foreground);
+  --shiki-background: transparent;
+  --shiki-token-keyword: var(--foreground);
+  --shiki-token-string: var(--color-orange-800);
+  --shiki-token-string-expression: var(--color-orange-800);
+  --shiki-token-comment: var(--color-neutral-400);
+  --shiki-token-constant: var(--foreground);
+  --shiki-token-function: var(--foreground);
+  --shiki-token-parameter: var(--foreground);
+  --shiki-token-punctuation: var(--foreground);
+  --shiki-token-link: var(--color-orange-800);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+    --color-orange-800: #fb923c;
+  }
+}
+
+/* ─── Base styles ─────────────────────────────────────────────────────────── */
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
+
+/* ─── Title letter-spacing ───────────────────────────────────────────────── */
+.title {
+  letter-spacing: -0.05em;
+}
+
+/* ─── Tube / pipe animations ─────────────────────────────────────────────── */
+.tube-path {
+  stroke-dasharray: 6 28;
+  stroke-dashoffset: 0;
+  animation: tube-path-flow var(--tube-duration, 0.8s) linear infinite;
+  animation-delay: var(--tube-delay, 0s);
+  animation-direction: var(--tube-direction, normal);
+  opacity: 0.9;
+}
+
+.tube-bar {
+  position: relative;
+  overflow: hidden;
+}
+
+.tube-bar::after {
+  content: "";
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    color-mix(in srgb, var(--color-orange-800) 70%, transparent) 50%,
+    transparent 100%
+  );
+  position: absolute;
+  inset: 0;
+  opacity: 0.7;
+  animation: tube-bar-horizontal var(--tube-duration, 0.8s) linear infinite;
+  animation-delay: var(--tube-delay, 0s);
+  animation-direction: var(--tube-direction, normal);
+  pointer-events: none;
+  transform: translate(-100%);
+}
+
+.tube-bar-vertical::after {
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    color-mix(in srgb, var(--color-orange-800) 70%, transparent) 50%,
+    transparent 100%
+  );
+  animation: tube-bar-vertical var(--tube-duration, 0.8s) linear infinite;
+  animation-delay: var(--tube-delay, 0s);
+  animation-direction: var(--tube-direction, normal);
+  transform: translateY(-100%);
+}
+
+@keyframes tube-path-flow {
+  to {
+    stroke-dashoffset: -34px;
+  }
+}
+
+@keyframes tube-bar-horizontal {
+  to {
+    transform: translate(100%);
+  }
+}
+
+@keyframes tube-bar-vertical {
+  to {
+    transform: translateY(100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tube-path {
+    animation: none;
+  }
+  .tube-bar::after,
+  .tube-bar-vertical::after {
+    animation: none;
+    transform: none;
+  }
+}
+
+/* ─── Shiki code block overrides ─────────────────────────────────────────── */
+.shiki {
+  background-color: var(--background) !important;
+  color: var(--foreground);
+}
+
+.shiki span {
+  color: var(--shiki-token, var(--foreground));
+}

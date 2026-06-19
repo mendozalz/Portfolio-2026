@@ -1,0 +1,32 @@
+---
+interface Props {
+  id: string;
+  size?: number;
+  radius?: number;
+}
+
+const { id, size = 10, radius = 1 } = Astro.props;
+---
+
+<div class="absolute inset-0">
+  <svg width="100%" height="100%" aria-hidden="true">
+    <defs>
+      <pattern
+        viewBox={`0 0 ${size} ${size}`}
+        width={size}
+        height={size}
+        patternUnits="userSpaceOnUse"
+        id={id}
+      >
+        <circle
+          cx={size / 2}
+          cy={size / 2}
+          r={radius}
+          fill="currentColor"
+          class="[fill:hsl(0,0%,0%)] dark:[fill:hsl(0,0%,30%)]"
+        ></circle>
+      </pattern>
+    </defs>
+    <rect width="100%" height="100%" fill={`url(#${id})`}></rect>
+  </svg>
+</div>

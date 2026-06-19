@@ -1,0 +1,121 @@
+---
+import { testimonials } from '../../data/testimonials';
+import GridCell from '../ui/GridCell.astro';
+import DotPattern from '../ui/DotPattern.astro';
+import HatchPattern from '../ui/HatchPattern.astro';
+import TestimonialCard from '../ui/TestimonialCard.astro';
+import SectionTitle from '../ui/SectionTitle.astro';
+---
+
+<div class="lg:grid lg:grid-cols-8 lg:border-l lg:auto-rows-fr flex flex-col lg:block">
+  <!-- Desktop: 26 filler squares -->
+  {Array.from({ length: 26 }).map((_, i) => (
+    <div class="hidden lg:block border-r border-b aspect-square"></div>
+  ))}
+
+  <!-- Section title: mobile h2 + desktop grid cell -->
+  <SectionTitle text="Testimonials" />
+
+  <!-- Mobile testimonial cards -->
+  {testimonials.map((t) => (
+    <div class="lg:hidden border border-t-0">
+      <div class="p-6 space-y-4">
+        <TestimonialCard
+          quote={t.quote}
+          name={t.name}
+          role={t.role}
+          company={t.company}
+          companyUrl={t.companyUrl}
+          size="sm"
+        />
+      </div>
+    </div>
+  ))}
+
+  <!-- Desktop: Testimonial 1 (Nick) — (2,2) 3×2 -->
+  <GridCell x={2} y={2} width={3} height={2} display="flex">
+    <div class="relative h-full w-full overflow-hidden">
+      <DotPattern id="test-dot-1" />
+      <div class="relative p-6 pb-0 h-full w-full flex flex-col">
+        <TestimonialCard
+          quote={testimonials[0]!.quote}
+          name={testimonials[0]!.name}
+          role={testimonials[0]!.role}
+          company={testimonials[0]!.company}
+          size="lg"
+        />
+      </div>
+    </div>
+  </GridCell>
+
+  <!-- Desktop: quote icon circle — (5,2) 1×2 -->
+  <GridCell x={5} y={2} width={1} height={2}>
+    <div class="relative h-full w-full overflow-hidden">
+      <DotPattern id="test-dot-icon-1" />
+      <div class="relative h-full w-full flex items-center justify-center">
+        <div class="border bg-background rounded-full size-24 flex items-center justify-center">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="48">
+            <title>Quote</title>
+            <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"></path>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </GridCell>
+
+  <!-- Desktop: hatch filler — (2,4) 1×2 -->
+  <GridCell x={2} y={4} width={1} height={2}>
+    <HatchPattern id="test-hatch-1" insetShadow={true} />
+  </GridCell>
+
+  <!-- Desktop: Testimonial 2 (Seve) — (5,4) 3×2 -->
+  <GridCell x={5} y={4} width={3} height={2} display="flex">
+    <div class="relative h-full w-full overflow-hidden">
+      <DotPattern id="test-dot-2" />
+      <div class="relative p-8 pb-0 h-full w-full flex flex-col min-h-0">
+        <TestimonialCard
+          quote={testimonials[1]!.quote}
+          name={testimonials[1]!.name}
+          role={testimonials[1]!.role}
+          company={testimonials[1]!.company}
+          companyUrl={testimonials[1]!.companyUrl}
+          size="lg"
+        />
+      </div>
+    </div>
+  </GridCell>
+
+  <!-- Desktop: Testimonial 3 (Dominic) — (2,6) 3×2 -->
+  <GridCell x={2} y={6} width={3} height={2} display="flex">
+    <div class="relative h-full w-full overflow-hidden">
+      <DotPattern id="test-dot-3" />
+      <div class="relative p-6 pb-0 h-full w-full flex flex-col">
+        <TestimonialCard
+          quote={testimonials[2]!.quote}
+          name={testimonials[2]!.name}
+          role={testimonials[2]!.role}
+          company={testimonials[2]!.company}
+          size="lg"
+        />
+      </div>
+    </div>
+  </GridCell>
+
+  <!-- Desktop: center dot decoration — (5,6) 1×2 -->
+  <GridCell x={5} y={6} width={1} height={2}>
+    <div class="h-full relative flex items-center justify-center">
+      <div class="absolute size-5 rounded-full border bg-background flex items-center justify-center">
+        <div class="size-3 rounded-full bg-foreground"></div>
+      </div>
+      <svg viewBox="0 0 100 100" width="100%" height="100%" aria-hidden="true">
+        <circle cx="50" cy="50" r="7" class="fill-foreground"></circle>
+        <circle cx="50" cy="50" r="4" class="fill-white"></circle>
+      </svg>
+    </div>
+  </GridCell>
+
+  <!-- Desktop: hatch filler right — (8,6) 1×2 -->
+  <GridCell x={8} y={6} width={1} height={2}>
+    <HatchPattern id="test-hatch-2" insetShadow={true} />
+  </GridCell>
+</div>

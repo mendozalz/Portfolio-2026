@@ -1,0 +1,63 @@
+---
+/**
+ * Renders the stacked outline-text section title in two variants:
+ * - Mobile: h2.text-6xl with 3 ghost rows + 1 filled row
+ * - Desktop: p.text-[120px] with 5 ghost rows + 1 filled row
+ * Both use space-y-[var(--gap)] / --gap:-0.6em for the overlap effect.
+ *
+ * Usage: drop this inside the appropriate grid cell wrapper for desktop,
+ * and it self-renders the mobile variant before it.
+ */
+interface Props {
+  text: string;
+}
+
+const { text } = Astro.props;
+
+const GHOST_MOBILE = 3;
+const GHOST_DESKTOP = 5;
+const GAP = '-0.6em';
+---
+
+<!-- Mobile version: shows in flex-col flow on mobile, hidden on desktop -->
+<div class="lg:hidden border border-t-0 flex items-center justify-center p-6">
+  <h2 class="text-6xl sm:text-7xl font-medium">
+    <span
+      class="flex flex-col leading-[0.8] space-y-[var(--gap)]"
+      style={`--gap:${GAP}`}
+    >
+      {Array.from({ length: GHOST_MOBILE }).map(() => (
+        <span
+          style="-webkit-text-stroke:1px var(--foreground);color:var(--background)"
+          class="select-none"
+        >
+          {text}
+        </span>
+      ))}
+      <span>{text}</span>
+    </span>
+  </h2>
+</div>
+
+<!-- Desktop version: grid cell at x:3 y:1 w:4 h:1, hidden on mobile -->
+<div
+  class="col-start-[var(--x)] row-start-[var(--y)] border-r border-b border-foreground relative col-span-[var(--width)] row-span-[var(--height)] hidden lg:flex overflow-hidden items-end justify-center"
+  style={`--x:3;--y:1;--width:4;--height:1;aspect-ratio:4`}
+>
+  <p class="text-[120px] font-medium translate-y-2">
+    <span
+      class="flex flex-col leading-[0.8] space-y-[var(--gap)]"
+      style={`--gap:${GAP}`}
+    >
+      {Array.from({ length: GHOST_DESKTOP }).map(() => (
+        <span
+          style="-webkit-text-stroke:1px var(--foreground);color:var(--background)"
+          class="select-none"
+        >
+          {text}
+        </span>
+      ))}
+      <span>{text}</span>
+    </span>
+  </p>
+</div>

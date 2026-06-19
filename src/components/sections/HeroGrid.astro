@@ -1,0 +1,230 @@
+---
+import { Code } from 'astro:components';
+import Header from '../interactive/Header';
+import GridCell from '../ui/GridCell.astro';
+import DotPattern from '../ui/DotPattern.astro';
+import HatchPattern from '../ui/HatchPattern.astro';
+import TubeConnector from '../ui/TubeConnector.astro';
+import CornerDecoration from '../ui/CornerDecoration.astro';
+import CopyButton from '../interactive/CopyButton';
+import IconCloudflare from '../icons/IconCloudflare.astro';
+
+const heroCode = `import { getSandbox } from "@cloudflare/sandbox";
+
+// Export the Sandbox class in your Worker
+export { Sandbox } from "@cloudflare/sandbox";
+
+export default {
+  async fetch(request: Request, env: Env) {
+    const sandbox = getSandbox(env.Sandbox, "test-env");
+    // Clone a repository
+    await sandbox.gitCheckout(
+      "https://github.com/cloudflare/agents"
+    );
+    // Run tests
+    const testResult = await sandbox.exec("npm test");
+    return new Response(
+      JSON.stringify({
+        tests: testResult.exitCode === 0
+          ? "passed"
+          : "failed",
+        output: testResult.stdout,
+      })
+    );
+  },
+};`;
+---
+
+<div class="w-full lg:w-[calc(100%+2px)] lg:-mx-px">
+  <!-- Sticky Header (React island) -->
+  <Header client:load />
+
+  <!-- 8-column hero grid -->
+  <div class="lg:grid lg:grid-cols-8 lg:border-l lg:auto-rows-fr flex flex-col lg:block">
+    <!-- 8 filler squares (top row, desktop) -->
+    {Array.from({ length: 8 }).map((_, i) => (
+      <div class="hidden lg:block border-r border-b aspect-square"></div>
+    ))}
+
+    <!-- Mobile intro text -->
+    <div class="border p-6 space-y-3 lg:hidden">
+      <h2 class="text-3xl sm:text-4xl font-semibold leading-tight">
+        Meet Cloudflare Sandboxes.
+      </h2>
+      <p class="text-base sm:text-lg text-foreground/80">
+        Run secure, isolated code environments directly on Cloudflare's edge network.
+      </p>
+    </div>
+
+    <!-- (1,2): Start junction circle + horizontal tube -->
+    <GridCell x={1} y={2} width={1} height={1} display="flex" class="items-center justify-end pr-0">
+      <div class="relative flex items-center justify-end h-full w-full">
+        <div class="absolute size-5 rounded-full border bg-background flex items-center justify-center right-[-10px] z-10">
+          <div class="size-3 rounded-full bg-foreground"></div>
+        </div>
+        <div class="w-1/2 h-px bg-foreground/20 tube-bar" style="--tube-duration:0.9s;--tube-delay:-0.1s"></div>
+      </div>
+    </GridCell>
+
+    <!-- (2,2): L-curve tube connector -->
+    <GridCell x={2} y={2} width={1} height={1}>
+      <TubeConnector
+        path="M 100 50 a 50 50 0 0 0 -50 -50 V 0"
+        viewBox="0 0 100 100"
+        delay="-0.2s"
+        duration="0.9s"
+        showDots={false}
+      />
+    </GridCell>
+
+    <!-- (3,2)–(5,2): Intro text cell -->
+    <GridCell x={3} y={2} width={3} height={1} display="flex" class="items-center px-6">
+      <div class="space-y-1">
+        <h2 class="text-xl font-semibold leading-snug">
+          Meet Cloudflare Sandboxes.
+        </h2>
+        <p class="text-sm text-foreground/70">
+          Run secure, isolated code environments on the edge.
+        </p>
+      </div>
+    </GridCell>
+
+    <!-- (6,2): Cloudflare logo -->
+    <GridCell x={6} y={2} width={1} height={1} display="flex" class="items-center justify-center">
+      <IconCloudflare width={48} />
+    </GridCell>
+
+    <!-- (7,2): Sandbox icon -->
+    <GridCell x={7} y={2} width={1} height={1} display="flex" class="items-center justify-center">
+      <div class="border bg-background rounded-lg p-3 flex items-center justify-center">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="28">
+          <title>Sandbox</title>
+          <path d="M12 8V4H8"></path>
+          <rect width="16" height="12" x="4" y="8" rx="2"></rect>
+          <path d="M2 14h2"></path><path d="M20 14h2"></path>
+          <path d="M15 13v2"></path><path d="M9 13v2"></path>
+        </svg>
+      </div>
+    </GridCell>
+
+    <!-- (8,2): Hatch pattern -->
+    <GridCell x={8} y={2} width={1} height={1}>
+      <HatchPattern id="hero-hatch-1" insetShadow={true} />
+    </GridCell>
+
+    <!-- (1,3)–(1,4): Left hatch column -->
+    <GridCell x={1} y={3} width={1} height={2}>
+      <HatchPattern id="hero-hatch-left" insetShadow={true} />
+    </GridCell>
+
+    <!-- (2,3)–(5,6): Main code block (4×4) -->
+    <GridCell x={2} y={3} width={4} height={4} class="overflow-hidden">
+      <div class="p-2 sm:p-4 relative h-full group">
+        <CornerDecoration />
+        <CopyButton client:load text={heroCode} ariaLabel="Copy code" variant="inline" />
+        <div class="h-full w-full border bg-background pl-6 pr-3 pt-10 pb-3 overflow-auto"
+          style="--default-mono-font-family:var(--font-mono);--background:transparent">
+          <Code
+            code={heroCode}
+            lang="typescript"
+            theme="css-variables"
+            class="shiki max-w-full max-h-full overflow-auto text-sm"
+          />
+        </div>
+      </div>
+    </GridCell>
+
+    <!-- (6,3): Curve tube (down-right) -->
+    <GridCell x={6} y={3} width={1} height={1}>
+      <TubeConnector
+        path="M 0 50 a 50 50 0 0 1 50 50 H 100"
+        viewBox="0 0 100 100"
+        delay="-0.3s"
+        duration="0.9s"
+        showDots={false}
+      />
+    </GridCell>
+
+    <!-- (7,3): Straight vertical tube -->
+    <GridCell x={7} y={3} width={1} height={1}>
+      <TubeConnector
+        path="M 50 0 V 100"
+        viewBox="0 0 100 100"
+        delay="-0.15s"
+        duration="0.9s"
+        showDots={false}
+      />
+    </GridCell>
+
+    <!-- (8,3): JS/TS logo -->
+    <GridCell x={8} y={3} width={1} height={1} display="flex" class="items-center justify-center">
+      <div class="border bg-background rounded-lg p-3 flex items-center justify-center">
+        <span class="font-mono font-bold text-sm">JS</span>
+      </div>
+    </GridCell>
+
+    <!-- (6,4)–(8,4): Terminal mockup -->
+    <GridCell x={6} y={4} width={3} height={1} class="overflow-hidden">
+      <div class="relative h-full w-full overflow-hidden">
+        <DotPattern id="hero-dot-terminal" />
+        <div class="relative p-4 pb-0 h-full w-full">
+          <div class="relative bg-background w-full h-full border border-b-0 overflow-hidden">
+            <div class="h-6 border-b flex items-center px-4 gap-2">
+              <div class="size-2 rounded-full bg-foreground/30"></div>
+              <div class="size-2 rounded-full bg-foreground/30"></div>
+              <div class="size-2 rounded-full bg-foreground/30"></div>
+            </div>
+            <div class="font-mono text-xs p-3 space-y-1 text-foreground/80">
+              <p><span class="text-foreground/40">$</span> npm test</p>
+              <p class="text-green-600 dark:text-green-400">✓ All tests passed</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </GridCell>
+
+    <!-- (6,5): Curve tube (bottom-left out) -->
+    <GridCell x={6} y={5} width={1} height={1}>
+      <TubeConnector
+        path="M 100 50 a 50 50 0 0 1 -50 50 V 100"
+        viewBox="0 0 100 100"
+        delay="-0.4s"
+        direction="reverse"
+        duration="0.9s"
+        showDots={false}
+      />
+    </GridCell>
+
+    <!-- (7,5)–(8,6): File icons grid -->
+    <GridCell x={7} y={5} width={2} height={2} display="flex" class="items-center justify-center">
+      <div class="relative h-full w-full overflow-hidden">
+        <DotPattern id="hero-dot-files" />
+        <div class="relative h-full w-full flex items-center justify-center">
+          <div class="grid grid-cols-2 gap-2 p-4">
+            {['package.json', 'index.ts', 'app.ts', 'types.ts'].map((name) => (
+              <div class="border bg-background rounded px-2 py-1 text-[10px] font-mono text-center">
+                {name}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </GridCell>
+
+    <!-- (6,6): Hatch -->
+    <GridCell x={6} y={6} width={1} height={1}>
+      <HatchPattern id="hero-hatch-2" insetShadow={true} />
+    </GridCell>
+
+    <!-- (1,5): End junction circle -->
+    <GridCell x={1} y={7} width={1} height={1} display="flex" class="items-center justify-end pr-0">
+      <div class="relative flex items-center justify-end h-full w-full">
+        <div class="absolute size-5 rounded-full border bg-background flex items-center justify-center right-[-10px] z-10">
+          <div class="size-3 rounded-full bg-foreground"></div>
+        </div>
+        <div class="w-1/2 h-px bg-foreground/20 tube-bar" style="--tube-duration:0.9s;--tube-delay:-0.5s;--tube-direction:reverse"></div>
+      </div>
+    </GridCell>
+  </div>
+</div>

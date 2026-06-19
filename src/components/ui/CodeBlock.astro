@@ -1,0 +1,46 @@
+---
+import { Code } from 'astro:components';
+import CopyButton from '../interactive/CopyButton';
+import CornerDecoration from './CornerDecoration.astro';
+
+interface Props {
+  code: string;
+  lang?: string;
+  class?: string;
+  showCopy?: boolean;
+}
+
+const { code, lang = 'typescript', class: className = '', showCopy = true } =
+  Astro.props;
+---
+
+<div class:list={['p-2 sm:p-4 relative h-full group', className]}>
+  <CornerDecoration />
+  {
+    showCopy && (
+      <CopyButton
+        client:load
+        text={code}
+        ariaLabel="Copy code to clipboard"
+        variant="inline"
+      />
+    )
+  }
+  <div
+    class="h-full w-full border bg-background pl-6 sm:pl-8 pr-3 sm:pr-4 pt-8 sm:pt-12 pb-3 sm:pb-4 overflow-auto"
+    style="--default-mono-font-family:var(--font-mono);--background:transparent"
+  >
+    <Code
+      code={code}
+      lang={lang}
+      theme="css-variables"
+      class="shiki max-w-full max-h-full overflow-auto"
+    />
+  </div>
+</div>
+
+<style>
+  :global(.shiki) {
+    background-color: transparent !important;
+  }
+</style>

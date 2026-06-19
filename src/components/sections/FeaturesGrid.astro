@@ -1,0 +1,84 @@
+---
+import { features } from '../../data/features';
+import GridCell from '../ui/GridCell.astro';
+import DotPattern from '../ui/DotPattern.astro';
+import HatchPattern from '../ui/HatchPattern.astro';
+import SectionTitle from '../ui/SectionTitle.astro';
+
+const COLS = 8;
+---
+
+<div class="lg:grid lg:grid-cols-8 lg:border-l lg:auto-rows-fr flex flex-col lg:block">
+  <!-- Desktop: 8 filler squares (row 0) -->
+  {Array.from({ length: COLS }).map(() => (
+    <div class="hidden lg:block border-r border-b aspect-square"></div>
+  ))}
+
+  <!-- Section title: mobile h2 + desktop grid cell (both inside SectionTitle) -->
+  <SectionTitle text="Features" />
+
+  {features.map((feature, idx) => {
+    const isLeft = idx % 2 === 0;
+    const visualX = isLeft ? feature.gridX + 3 : feature.gridX - 3;
+    const dotId = `feat-dot-${feature.id}`;
+    const hatchId = `feat-hatch-${feature.id}`;
+
+    return (
+      <>
+        {/* Mobile card */}
+        <div class="lg:hidden border border-t-0">
+          <section class="p-6 space-y-2">
+            <h3 class="text-xl font-semibold">{feature.title}</h3>
+            <p class="text-sm text-foreground/80">{feature.description}</p>
+          </section>
+        </div>
+
+        {/* Desktop: text cell */}
+        <GridCell
+          x={feature.gridX}
+          y={feature.gridY}
+          width={feature.gridWidth}
+          height={1}
+          display="flex"
+          class="items-center justify-center px-8"
+        >
+          <section class="space-y-1">
+            <h2 class="text-lg font-semibold">{feature.title}</h2>
+            <p class="text-sm text-foreground/70">{feature.description}</p>
+          </section>
+        </GridCell>
+
+        {/* Desktop: visual cell */}
+        <GridCell
+          x={isLeft ? feature.gridX + 3 : feature.gridX - 3}
+          y={feature.gridY}
+          width={3}
+          height={1}
+        >
+          <div class="relative h-full w-full overflow-hidden">
+            <DotPattern id={dotId} />
+            <div class="relative p-6 pb-0 h-full w-full flex items-center justify-center">
+              <div class="border bg-background rounded-lg p-4 flex flex-col items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round" width="32">
+                  <title>{feature.title}</title>
+                  <path d="M12 8V4H8"></path>
+                  <rect width="16" height="12" x="4" y="8" rx="2"></rect>
+                  <path d="M2 14h2"></path><path d="M20 14h2"></path>
+                  <path d="M15 13v2"></path><path d="M9 13v2"></path>
+                </svg>
+                <p class="text-xs font-mono">{feature.id}</p>
+              </div>
+            </div>
+          </div>
+        </GridCell>
+      </>
+    );
+  })}
+
+  <!-- Footer hatch / filler rows -->
+  {Array.from({ length: COLS }).map((_, i) => (
+    <div class="hidden lg:block border-r border-b aspect-square"></div>
+  ))}
+</div>

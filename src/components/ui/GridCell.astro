@@ -1,0 +1,33 @@
+---
+interface Props {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  class?: string;
+  display?: 'block' | 'flex' | 'grid';
+}
+
+const {
+  x,
+  y,
+  width,
+  height,
+  class: className = '',
+  display = 'block',
+} = Astro.props;
+
+const displayClass = `hidden lg:${display}`;
+---
+
+<div
+  class:list={[
+    'col-start-[var(--x)] row-start-[var(--y)] border-r border-b border-foreground relative',
+    `col-span-[var(--width)] row-span-[var(--height)]`,
+    displayClass,
+    className,
+  ]}
+  style={`--x:${x};--y:${y};--width:${width};--height:${height};aspect-ratio:${width / height}`}
+>
+  <slot />
+</div>

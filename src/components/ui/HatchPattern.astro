@@ -1,0 +1,43 @@
+---
+interface Props {
+  id: string;
+  size?: number;
+  insetShadow?: boolean;
+}
+
+const { id, size = 8, insetShadow = false } = Astro.props;
+---
+
+<div
+  class:list={[
+    'relative h-full w-full',
+    insetShadow &&
+      '[box-shadow:inset_-4px_4px_0_4px_hsl(0,0%,90%)] dark:[box-shadow:inset_-4px_4px_0_4px_hsl(0,0%,30%)]',
+  ]}
+>
+  <div class="absolute inset-0">
+    <svg width="100%" height="100%" aria-hidden="true">
+      <defs>
+        <pattern
+          viewBox={`0 0 ${size} ${size}`}
+          width={size}
+          height={size}
+          patternUnits="userSpaceOnUse"
+          id={id}
+        >
+          <line
+            x1="0"
+            y1={size}
+            x2={size}
+            y2="0"
+            stroke="currentColor"
+            vector-effect="non-scaling-stroke"
+            class="[stroke:hsl(0,0%,0%)] dark:[stroke:hsl(0,0%,30%)]"
+          ></line>
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill={`url(#${id})`}></rect>
+    </svg>
+  </div>
+  <slot />
+</div>

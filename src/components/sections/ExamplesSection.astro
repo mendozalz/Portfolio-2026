@@ -1,0 +1,38 @@
+---
+import { codeToHtml, createCssVariablesTheme } from 'shiki';
+import { examples } from '../../data/examples';
+import ExamplesTabs from '../interactive/ExamplesTabs';
+import type { HighlightedExample } from '../interactive/ExamplesTabs';
+import SectionTitle from '../ui/SectionTitle.astro';
+
+const cssVarsTheme = createCssVariablesTheme({
+  name: 'css-variables',
+  variablePrefix: '--shiki-',
+  variableDefaults: {},
+  fontStyle: true,
+});
+
+// Pre-highlight all examples on the server using Shiki css-variables theme
+const highlightedExamples: HighlightedExample[] = await Promise.all(
+  examples.map(async (ex) => {
+    const html = await codeToHtml(ex.code, {
+      lang: ex.lang,
+      theme: cssVarsTheme,
+    });
+    return { ...ex, html };
+  })
+);
+---
+
+<div class="lg:grid lg:grid-cols-8 lg:border-l lg:auto-rows-fr flex flex-col lg:block">
+  <!-- Desktop: 8 filler squares -->
+  {Array.from({ length: 8 }).map(() => (
+    <div class="hidden lg:block border-r border-b aspect-square"></div>
+  ))}
+
+  <!-- Section title: mobile h2 + desktop grid cell -->
+  <SectionTitle text="Examples" />
+</div>
+
+<!-- React island: interactive tabs with pre-highlighted HTML -->
+<ExamplesTabs client:load examples={highlightedExamples} />
