@@ -8,6 +8,7 @@ import TubeConnector from '../ui/TubeConnector.astro';
 import CornerDecoration from '../ui/CornerDecoration.astro';
 import CopyButton from '../interactive/CopyButton';
 import IconCloudflare from '../icons/IconCloudflare.astro';
+import IconPython from '../icons/IconPython.astro';
 
 const heroCode = `import { getSandbox } from "@cloudflare/sandbox";
 
@@ -91,20 +92,15 @@ export default {
 
     <!-- (6,2): Cloudflare logo -->
     <GridCell x={6} y={2} width={1} height={1} display="flex" class="items-center justify-center">
-      <IconCloudflare width={48} />
+      <IconCloudflare width={72} />
     </GridCell>
 
-    <!-- (7,2): Sandbox icon -->
+    <!-- (7,2): Python logo in dashed circle -->
     <GridCell x={7} y={2} width={1} height={1} display="flex" class="items-center justify-center">
-      <div class="border bg-background rounded-lg p-3 flex items-center justify-center">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="28">
-          <title>Sandbox</title>
-          <path d="M12 8V4H8"></path>
-          <rect width="16" height="12" x="4" y="8" rx="2"></rect>
-          <path d="M2 14h2"></path><path d="M20 14h2"></path>
-          <path d="M15 13v2"></path><path d="M9 13v2"></path>
-        </svg>
+      <div class="relative flex items-center justify-center">
+        <div class="size-20 rounded-full border-2 border-dashed border-foreground/40 flex items-center justify-center bg-foreground/5">
+          <IconPython width={52} />
+        </div>
       </div>
     </GridCell>
 
@@ -157,10 +153,10 @@ export default {
       />
     </GridCell>
 
-    <!-- (8,3): JS/TS logo -->
+    <!-- (8,3): JS/TS badge -->
     <GridCell x={8} y={3} width={1} height={1} display="flex" class="items-center justify-center">
-      <div class="border bg-background rounded-lg p-3 flex items-center justify-center">
-        <span class="font-mono font-bold text-sm">JS</span>
+      <div class="size-14 rounded-lg bg-foreground flex items-center justify-center">
+        <span class="font-mono font-bold text-base text-background">JS</span>
       </div>
     </GridCell>
 
